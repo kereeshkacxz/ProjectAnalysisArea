@@ -1,25 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import MainPage from './pages/MainPage'
+import SecondPage from './pages/SecondPage'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [idx, setIdx] = useState(0);
+    const [curCity, setCurCity] = useState("");
+    const dictCity = {
+        "Петрозаводск":["Кукковка","Центр","Древлянка"],
+        "Екатеринбург":["Ленинский","Академический","Октябрьский"],
+        "Тула":["Центральный","Пролетарский","Советский"]
+    };
+    return (
+        <div className="App">
+        {idx === 0 && <MainPage nextPage={(() => setIdx(1))} setCurCity={setCurCity} dictCity={dictCity} />}
+        {idx === 1 && <SecondPage curCity={curCity} prevPage={(() => setIdx(0))} dictCity={dictCity}  />}
+        </div>
+    );
 }
 
 export default App;
