@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "Inter-Bold";
+    src:  url("../components/fontInter/Inter-Bold.otf");
+}
+  
+.divTitle{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    flex-wrap: wrap;
+    font-family: "Inter-Bold";
+    font-size: 24px;
+    gap:7px;
+    color: white;
+}

@@ -3,10 +3,8 @@ import styles from './CheckButton.module.css'
 
 export default function CheckButton({setArrayDistrict, children, isOn, arrayDistrict}) {
     function setOn(){
-        console.log(arrayDistrict)
         if(isOn)
         {
-            console.log(100)
             setArrayDistrict(arrayDistrict.filter(item => item !== children));
         }
         else

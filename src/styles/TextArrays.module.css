@@ -1,0 +1,31 @@
+@font-face {
+    font-family: "Inter-Bold";
+    src:  url("../components/fontInter/Inter-Bold.otf");
+}
+@font-face {
+    font-family: "Inter";
+    src:  url("../components/fontInter/Inter-Light.otf");
+}
+.blockForText{
+    gap:5px;
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+}
+.titleOfText{
+    display: flex;
+    font-family:"Inter-Bold";
+    font-size: 20px;
+    margin-bottom: 6px;
+    color:white;
+    text-align:left;
+    gap:7px;
+}
+.text{
+    font-size: 16px;
+    font-family:"Inter";
+    color:white;
+    text-align:left;
+    display:flex;
+    gap:5px;
+}
