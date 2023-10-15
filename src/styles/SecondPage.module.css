@@ -50,7 +50,29 @@
     background-color: rgba(0,0,0,0.25);
     width: 45vw;
     height: 80vh;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
 }
+
+.contentRightBox::-webkit-scrollbar {
+    width: 6px;
+    height: 3px;
+}
+
+.contentRightBox::-webkit-scrollbar-thumb {
+    background-color: #5BA3D8; 
+}
+  
+.contentRightBox::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0.3);
+}
+
 .textForCity{
     text-align: left;
     color: #FFF;

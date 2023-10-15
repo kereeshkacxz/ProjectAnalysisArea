@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styles from '../styles/DivData.module.css'
 import ColorArray from "../components/ColorArray";
 import TextArray from "../components/TextArray"
+
+import Score from "../components/Score";
 
 export default function DivData({dictResponse, arrayDistrict}) {
     const DICT_OF_DISTRICT ={
@@ -26,12 +28,13 @@ export default function DivData({dictResponse, arrayDistrict}) {
         "Соломенное":"Solomennoye",
         "Сулажгора":"Sulazhgora",
         "Тепличный":"Teplichnyi",  
+        "Весь город": 'all',
     }
+    
     let dictData = {'expertValue': [], 'serviceValue': [], 
         'posPlace': [[], {}], 
         'negPlace': [[], {}], 
         'averageData': [[], {}] };
-
 
     arrayDistrict.map((e) =>{
         let curDict = dictResponse[DICT_OF_DISTRICT[e]];
@@ -51,16 +54,41 @@ export default function DivData({dictResponse, arrayDistrict}) {
         )
     })   
 
+    const [recom, setRecom] = useState("Загрузка...");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setRecom("Загрузка...")
+            if(arrayDistrict.length !== 0 ){
+                try {
+                    const response = await fetch('http://localhost:8000/rec?score=' + dictData['serviceValue'].reduce((a, b) => a + b, 0));
+                    const data = await response.text();
+                    setRecom(data);
+                    console.log("data =", data);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        };
+
+        fetchData();
+    }, [arrayDistrict]);
+
     return(
         <>
         <div className={styles.divTitle}>
-            {arrayDistrict.length != 0 ? <ColorArray textArray={arrayDistrict} /> : "Район не выбран"}   
+            {arrayDistrict.length !== 0 ? <ColorArray textArray={arrayDistrict} /> : "Район не выбран"}   
         </div>
-        {arrayDistrict.length != 0 && 
-        <div>
-                <TextArray title="Положительные точки:" partOfDictResponse={dictData["posPlace"]} />
-                <TextArray title="Отрицательные точки:" partOfDictResponse={dictData["negPlace"]} />
-                <TextArray title="Среднее расстояние:" partOfDictResponse={dictData["averageData"]} />
+        {arrayDistrict.length !== 0 && 
+        <div style={{display: "flex", gap: "20px", flexDirection: "column"}}>
+                <TextArray title="Положительные точки:" partOfDictResponse={dictData["posPlace"]} isTotal={true}/>
+                <TextArray title="Отрицательные точки:" partOfDictResponse={dictData["negPlace"]} isTotal={true}/>
+                <TextArray title="Среднее расстояние:" partOfDictResponse={dictData["averageData"]} isTotal={false}/>
+                <div className={styles.textRec}>{recom}</div>
+                <div className={styles.divScore}>
+                    <Score title={"Оценка по критериям:"} maxVal={60} score={Math.round(dictData['expertValue'].reduce((a, b) => a+b, 0 )/(Object.keys(dictData['expertValue']).length))}></Score>
+                    <Score title={"Оценка нашего сервиса:"} maxVal={500}score={Math.round(dictData['serviceValue'].reduce((a, b) => a+b, 0 )/(Object.keys(dictData['serviceValue']).length))}></Score>
+                    </div>
         </div>}
         </>
     )
